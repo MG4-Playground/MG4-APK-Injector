@@ -1,0 +1,144 @@
+{
+  "total_files": 16,
+  "unique_spki": 8,
+  "recovered": 16,
+  "all_verified": true,
+  "results": {
+    "EM_DV_TLS_CA___G3B__aaa.pem": {
+      "file": "EM_DV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "EBED6475C2C2D80FCB199F3FE8DD6E6B3CE60B77EB15D4E42C3DEC0C6F5B5105",
+      "key_file": "EM_DV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_DV_TLS_CA___G3B__emsign.pem": {
+      "file": "EM_DV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "EBED6475C2C2D80FCB199F3FE8DD6E6B3CE60B77EB15D4E42C3DEC0C6F5B5105",
+      "key_file": "EM_DV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_DV_TLS_CA___G3B__aaa.pem"
+    },
+    "EM_DV_TLS_CA___G3C__aaa.pem": {
+      "file": "EM_DV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "49DD353DC2B919A3770645117D0E60C16115E7D1BC259EEFE734B00EA434FE5F",
+      "key_file": "EM_DV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_DV_TLS_CA___G3C__emsign.pem": {
+      "file": "EM_DV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "49DD353DC2B919A3770645117D0E60C16115E7D1BC259EEFE734B00EA434FE5F",
+      "key_file": "EM_DV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_DV_TLS_CA___G3C__aaa.pem"
+    },
+    "EM_EV_TLS_CA___G3B__aaa.pem": {
+      "file": "EM_EV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "E0254C7FCDC265E2F0F8A428DABB75AB4AE039B4872D62F5EE57F0877D5A8A41",
+      "key_file": "EM_EV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_EV_TLS_CA___G3B__emsign.pem": {
+      "file": "EM_EV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "E0254C7FCDC265E2F0F8A428DABB75AB4AE039B4872D62F5EE57F0877D5A8A41",
+      "key_file": "EM_EV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_EV_TLS_CA___G3B__aaa.pem"
+    },
+    "EM_EV_TLS_CA___G3C__aaa.pem": {
+      "file": "EM_EV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "5C0660A2B164910D8FF589C18E14552E9E0EC237DCEFE2CB736D41A4811F81A0",
+      "key_file": "EM_EV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_EV_TLS_CA___G3C__emsign.pem": {
+      "file": "EM_EV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "5C0660A2B164910D8FF589C18E14552E9E0EC237DCEFE2CB736D41A4811F81A0",
+      "key_file": "EM_EV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_EV_TLS_CA___G3C__aaa.pem"
+    },
+    "EM_OV_CS_CA___G3B__aaa.pem": {
+      "file": "EM_OV_CS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "EC4FFA1AD0AC88081314B7AAFFEF6A91F97CD57291BB5BA686C5415F5EB4F6B6",
+      "key_file": "EM_OV_CS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_OV_CS_CA___G3B__emsign.pem": {
+      "file": "EM_OV_CS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "EC4FFA1AD0AC88081314B7AAFFEF6A91F97CD57291BB5BA686C5415F5EB4F6B6",
+      "key_file": "EM_OV_CS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_OV_CS_CA___G3B__aaa.pem"
+    },
+    "EM_OV_CS_CA___G3C__aaa.pem": {
+      "file": "EM_OV_CS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "92C063D67E8F14DB71D288E11266FFDAF69CBF115F7BAB14F3BC2F68D25E0E30",
+      "key_file": "EM_OV_CS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_OV_CS_CA___G3C__emsign.pem": {
+      "file": "EM_OV_CS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "92C063D67E8F14DB71D288E11266FFDAF69CBF115F7BAB14F3BC2F68D25E0E30",
+      "key_file": "EM_OV_CS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_OV_CS_CA___G3C__aaa.pem"
+    },
+    "EM_OV_TLS_CA___G3B__aaa.pem": {
+      "file": "EM_OV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "43BFFA19D6EF651451F6841E019931E96F6F2EAEFF28AB4B6F1CE4576DE2717B",
+      "key_file": "EM_OV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_OV_TLS_CA___G3B__emsign.pem": {
+      "file": "EM_OV_TLS_CA___G3B__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "43BFFA19D6EF651451F6841E019931E96F6F2EAEFF28AB4B6F1CE4576DE2717B",
+      "key_file": "EM_OV_TLS_CA___G3B__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_OV_TLS_CA___G3B__aaa.pem"
+    },
+    "EM_OV_TLS_CA___G3C__aaa.pem": {
+      "file": "EM_OV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "63ECEFEE431D49523BC1136C4E72D0206A477086CAF606CD5CF025686C109CF8",
+      "key_file": "EM_OV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json"
+    },
+    "EM_OV_TLS_CA___G3C__emsign.pem": {
+      "file": "EM_OV_TLS_CA___G3C__aaa.pem",
+      "found": true,
+      "verified": true,
+      "spki_sha256": "63ECEFEE431D49523BC1136C4E72D0206A477086CAF606CD5CF025686C109CF8",
+      "key_file": "EM_OV_TLS_CA___G3C__aaa.key.pem",
+      "d_file": "keys/_secrets.json",
+      "reused_from": "EM_OV_TLS_CA___G3C__aaa.pem"
+    }
+  }
+}

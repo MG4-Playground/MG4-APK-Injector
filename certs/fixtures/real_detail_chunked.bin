@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+Date: Wed, 28 Oct 2026 16:27:47 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+x-br-response: sn=Y2xvdWQtZ2F0ZXdheS1wbGF0Zm9ybS5ocy0zMC5wcm9k,si=1394,auid=b7dd504d61a7359d9bfbd1f1d916474b
+Access-Control-Expose-Headers: traceresponse
+Access-Control-Expose-Headers: x-br-response
+x-br-response: sn=ZWNvbG9neS1pb3BlcGxhdGZvcm0uaHMtMzAucHJvZA==,si=1731,auid=9f5afd0108717676195e31c9f1cbae55
+traceresponse: 00-cefcb635ac842ece289c5b1c3690a9bf-9bd48ea9693824a8-01
+Server: kong/3.9.1
+X-Kong-Upstream-Latency: 23
+X-Kong-Proxy-Latency: 0
+Via: 1.1 kong/3.9.1
+X-Kong-Request-Id: 941832353bbec011c485680e112ae875
+X-Frame-Options: SAMEORIGIN
+Cache-Control: no-cache
+X-Content-Type-Options: nosniff
+x-via: 1.1 PS-HFE-01HYT188:7 (Cdn Cache Server V2.0), 1.1 PS-CKG-01XNV44:14 (Cdn Cache Server V2.0)
+x-ws-request-id: 6ae22283_PS-CKG-01XNV44_36619-34818
+
+68d
+{"code":200,"message":"success","data":{"appId":"appVersion_529657777918021","appName":"最美天气","appPackage":"com.icoolme.car.weather","appIconUri":"https://prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com/ecology/ecofile-8d0755c37a0347f38026885f6a647375.png","appResourceUri":"https://prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com/ecology/ecofile-f2382adef9d44098b67e9bfb10913a56.apk","detailUriList":["https://prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com/ecology/ecofile-acbde140bf974805bdff80cd0e95814c.png","https://prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com/ecology/ecofile-ae0b6f407bd448f9bba9e61c1f31cb7e.png","https://prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com/ecology/ecofile-e66a15e186ae4103b843acb4a2b8032c.png"],"slogan":"最美天气为你提供精准的天气预报","appDescription":"实况天气、小时预报、多天预报、生活服务，还有洗车指数、限行信息等天气信息，全面为您指南，让您出行无忧！","iterationDesc":"1.优化车机后台定位相关逻辑 2.优化车机交互逻辑和用户体验","developer":"最美天气(上海)科技有限公司","appActualSize":"7077","appDisplaySize":"6M","appVersionCode":"25","appVersionName":"1.0.1","permissionList":[{"permissionNameEn":"android.permission.ACCESS_FINE_LOCATION","permissionNameCn":"定位","permissionDesc":"允许该应用获取您的位置信息。"},{"permissionNameEn":"android.permission.ACCESS_COARSE_LOCATION","permissionNameCn":"定位","permissionDesc":"允许该应用获取您的位置信息。"}],"appPrivacyPolicy":"https://static.zuimeitianqi.com/web/privacy/privacy.html","recordNo":"","hmiVisible":null,"appScreen":"0"}}
+0
+
