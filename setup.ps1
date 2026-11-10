@@ -3,7 +3,7 @@
     车机第三方 APK 注入方案 —— 环境准备脚本 (Windows 10/11)
 
 .DESCRIPTION
-    -Hosts     备份并劫持 hosts (两个商店域名 -> 热点网关 IP)
+    -Hosts     备份并劫持 hosts (商店域名 -> 热点网关 IP)
     -Firewall  放行 443 入站 (需要管理员)
     -Restore   从备份还原 hosts
     -All       依次执行 Hosts + Firewall
@@ -29,7 +29,10 @@ $HostsPath   = "$env:SystemRoot\System32\drivers\etc\hosts"
 $BackupPath  = "$HostsPath.workbuddy.bak"
 $GatewayIP   = "192.168.137.1"
 $Domains     = @("prod-r-platform.z-onesoft.com",
-                 "prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com")
+                 "prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com",
+                 # 2026-11 起启用的新下载 CDN, 与旧 OSS 并存; 必须一并劫持,
+                 # 否则车机直连真实 CDN 绕过 MITM 代理
+                 "prod-dp-public-es33-tos.z-onesoft.com")
 $BeginMarker = "# ==== WorkBuddy car-unit proxy (own-vehicle APK test) ===="
 $EndMarker   = "# ==== end WorkBuddy car-unit proxy ===="
 

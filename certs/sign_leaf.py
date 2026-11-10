@@ -51,6 +51,10 @@ EXTRA_CERTS = [
 
 DOMAINS = [
     "prod-r-platform.z-onesoft.com",
+    # 通配符: 覆盖 z-onesoft.com 下所有子域 (详情域名 + 当前及今后可能出现的下载 CDN
+    # 域名, 例如 prod-dp-public-es33-tos.z-onesoft.com)。避免商店每换一次下载域名就要重签。
+    "*.z-onesoft.com",
+    # 旧 OSS 下载域名 (个别版本/接口仍可能走 OSS), 显式保留以防万一
     "prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com",
 ]
 

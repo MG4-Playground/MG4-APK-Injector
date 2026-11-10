@@ -25,7 +25,7 @@ python -m pip install cryptography brotli
 
 # 5. 起代理 (保持窗口), 另开窗口自检
 python proxy_server.py
-python selftest.py          # 期望 61 通过 / 0 失败
+python selftest.py          # 期望全部通过 / 0 失败 (需代理运行 + 上游可达 + APK 就位)
 ```
 
 然后在车机上：**设置 → 应用管理 → 应用商店 → 清除数据**，
@@ -49,8 +49,8 @@ python selftest.py          # 期望 61 通过 / 0 失败
 ```
 car-apk-injector/
 ├── proxy_server.py        代理服务端 (443, 单 SSLContext 多 SAN)
-├── selftest.py            自检脚本 (61 项)
-├── store_rules.json       规则: serve 1 条 + patch 1 条  ← 换 APK 改这里
+├── selftest.py            端到端自检脚本 (53 项, 需代理/网络/APK 就位)
+├── store_rules.json       规则: serve 2 条 + patch 1 条  ← 换 APK 改这里
 ├── setup.ps1              环境准备 (hosts / 防火墙 / 还原 / 体检)
 ├── pki/
 │   ├── chain.pem          叶子 + 3 张中间件 (覆盖 3 个信任库)
@@ -87,7 +87,7 @@ car-apk-injector/
 
 1. 把新 APK 放进 `apk/`
 2. 改 `store_rules.json`：
-   - `apk_path` / `serve[0].file` → 新 APK 路径
+   - `apk_path` 与**全部** `serve[].file` → 新 APK 路径（两条 serve 规则都要改）
    - `apk_size` → 新 APK 字节数
    - `patch[0].set` → 新应用名 / 包名 / `appActualSize`(字节//1024) / `appDisplaySize`(字节//1048576+"M")
 3. 重启代理
@@ -100,11 +100,41 @@ python -c "import os;s=os.path.getsize(r'apk\myapp.apk');print(s//1024, s//10485
 
 ---
 
+## 2026-11 更新：新下载域名
+
+商店自 2026-11 起把 APK 下载切到新 CDN `prod-dp-public-es33-tos.z-onesoft.com`，旧 OSS 域名并存。
+旧版本只劫持并签发了旧域名，会表现为**点安装直接显示「更新」、无法安装**
+（日志：`SSLPeerUnverifiedException: Hostname ... not verified`）。本版已修复：
+
+| 文件 | 改动 |
+|---|---|
+| `store_rules.json` | `serve` 增加新下载域名规则（`/ecology/` 前缀），与旧 OSS 并存 |
+| `certs/sign_leaf.py` | `DOMAINS` 增加 `*.z-onesoft.com` 通配符，覆盖该域下任意子域 |
+| `pki/chain.pem` / `leaf.key.pem` | 已重新签发，SAN 含通配符，到期 2027-11-10 |
+| `setup.ps1` | `$Domains` 增加新下载域名（**Windows 特有**） |
+
+> **部署时务必重跑 `.\setup.ps1 -All`（或 `-Hosts`）**，让 hosts 加入第三行。
+> 否则车机直连真实 CDN、绕过代理，serve 规则根本不会被命中。这是与安卓版最大的差异：
+> 安卓用 iptables REDIRECT 拦截全量 443，不依赖 DNS。
+
+证书到期或商店再换下载域名时：
+
+```powershell
+python certs\sign_leaf.py     # 重签后自动写回 pki\, 重启代理即可
+```
+
+若新域名不在 `z-onesoft.com` 下，还需同步改三处：`certs\sign_leaf.py` 的 `DOMAINS`、
+`setup.ps1` 的 `$Domains`、`store_rules.json` 的 `serve[].host`。
+
+**已知限制**：全量 443 MITM 下，非商店域名会因证书 SAN 不匹配而握手失败。
+
+---
+
 ## 排障速查
 
 | 现象 | 看哪 |
 |---|---|
-| 车机报「网络异常」 | `selftest.py` 的 **[8] 响应完整性** 要 PASS |
+| 车机报「网络异常」 | `selftest.py` 的 **响应完整性** 要 PASS |
 | 商店一直转圈 | 代理窗口的 `[ERROR] 转发失败: The read operation timed out` |
 | 详情页还是官方信息 | 代理窗口的 `[WARN] 响应不是 JSON` + `body前32字节=` |
 | 详情页对但装到官方 app | 有没有 `[serve] 规则命中` 行 |
@@ -112,6 +142,11 @@ python -c "import os;s=os.path.getsize(r'apk\myapp.apk');print(s//1024, s//10485
 | TLS 握手失败 | `python certs\verify_jsse.py` 看哪个根不可用 |
 
 更详细的排查见操作指南第 10 节。
+
+**关于 `selftest.py`**：它是端到端自检，需「代理已在运行 + 笔记本能连上游 + `apk/2.apk` 已就位」
+三个条件同时满足才会 53/53 全通过。若笔记本离线或未放 APK，网络类用例会 `TimeoutError`、
+APK 锚点用例会 `FileNotFoundError`，且用例函数提前抛异常会让输出的**总项数少于 53**，属预期；
+此时 chunked 解码、patch 字段改写、响应完整性等纯本地逻辑用例仍应全部 PASS。
 
 ---
 

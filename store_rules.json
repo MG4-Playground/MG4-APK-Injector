@@ -1,6 +1,6 @@
 {
   "_comment": "相对路径基于本文件所在目录解析, 整个包可随意搬走",
-  "_serve_paths": "车机实际下载路径为 /ecology/ecofile-<hash>.apk (OkDownload/1.0.7)，按 /ecology/ 前缀拦截",
+  "_serve_paths": "车机实际下载路径为 /ecology/ecofile-<hash>.apk (OkDownload/1.0.7)，按 /ecology/ 前缀拦截。下载域名有两套并存：旧 OSS (prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com) 与 新 z-onesoft CDN (prod-dp-public-es33-tos.z-onesoft.com)。",
   "_target_apk": "apk/2.apk = 高德地图 (com.autonavi.amapauto) 9.5.0.600013, 157605849 bytes, v2+v3 签名, minSdk 21",
   "apk_path": "apk/2.apk",
   "apk_size": 157605849,
@@ -8,6 +8,12 @@
     {
       "_comment": "OSS 下载资源 -> 直接下发本地 APK, 不回源。路径前缀 /ecology/ 命中即拦截",
       "host": "prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com",
+      "path_prefix": "/ecology/",
+      "file": "apk/2.apk"
+    },
+    {
+      "_comment": "新下载 CDN (z-onesoft.com), 2026-11 起启用, 与旧 OSS 并存。命中即下发本地 APK",
+      "host": "prod-dp-public-es33-tos.z-onesoft.com",
       "path_prefix": "/ecology/",
       "file": "apk/2.apk"
     }

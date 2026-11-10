@@ -1,0 +1,13 @@
+# Python 运行产物
+__pycache__/
+*.py[cod]
+
+# sign_leaf.py 从 chains.zip 自动提取的中间证书 (每次重签自动再生)
+certs/chainpart*.pem
+
+# 环境准备脚本的 hosts 备份 / 运行日志
+hosts.workbuddy.bak
+*.log
+
+# 本地投放的 APK (体积大, 按需放置)
+apk/*.apk

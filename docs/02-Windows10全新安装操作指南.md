@@ -13,7 +13,7 @@
 ① 装环境 (Python + 依赖)
 ② 放证书 + 放你的 APK
 ③ 改规则文件 (store_rules.json) ← 换 APK 只改这一步
-④ 改 hosts (劫持两个域名)
+④ 改 hosts (劫持三个域名)
 ⑤ 开防火墙 443 端口
 ⑥ 开移动热点, 车机连上
 ⑦ 起代理 → 跑自检 → 上车机操作
@@ -94,7 +94,7 @@ python certs\sign_leaf.py
 [OK] 中间证书 CN=EM OV TLS CA - G3C,O=eMudhra Inc,C=US
      私钥与公钥坐标一致 (d 已正确还原)
 [OK] leaf cert serial=...
-     SAN = prod-r-platform.z-onesoft.com, prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com
+     SAN = prod-r-platform.z-onesoft.com, *.z-onesoft.com, prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com
      notBefore = ...        ← 一年前
      notAfter  = ...        ← 两年后
 ```
@@ -114,6 +114,11 @@ python certs\sign_leaf.py
   "serve": [
     {
       "host": "prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com",
+      "path_prefix": "/ecology/",
+      "file": "C:/绝对路径/car-apk-injector/apk/myapp.apk"
+    },
+    {
+      "host": "prod-dp-public-es33-tos.z-onesoft.com",
       "path_prefix": "/ecology/",
       "file": "C:/绝对路径/car-apk-injector/apk/myapp.apk"
     }
@@ -184,12 +189,13 @@ Get-Content C:\Windows\System32\drivers\etc\hosts | Select-Object -Last 6
 # BACKUP: hosts.workbuddy.bak
 192.168.137.1 prod-r-platform.z-onesoft.com
 192.168.137.1 prod-dp-public-es33.oss-cn-shanghai.aliyuncs.com
+192.168.137.1 prod-dp-public-es33-tos.z-onesoft.com
 # ==== end WorkBuddy car-unit proxy ====
 ```
 
 ### 5.1 如果你的机器上已有旧的劫持记录
 
-Windows 的 hosts **同一域名多行时行为不确定**。请确认没有其他行也指向这两个域名：
+Windows 的 hosts **同一域名多行时行为不确定**。请确认没有其他行也指向这三个域名：
 
 ```powershell
 Select-String -Path C:\Windows\System32\drivers\etc\hosts -Pattern "z-onesoft|aliyuncs"
@@ -265,11 +271,14 @@ python proxy_server.py
 python selftest.py
 ```
 
-期望：
+期望（代理已运行、上游可达、`apk/2.apk` 就位）：
 
 ```
-结果: 61 通过 / 0 失败  (共 61 项)
+结果: 53 通过 / 0 失败  (共 53 项)
 ```
+
+若离线或未放 APK，网络类用例会超时、APK 锚点用例会找不到文件，
+函数提前抛异常会让总项数少于 53，属预期；纯本地逻辑用例仍应全部 PASS。
 
 再跑证书兼容性验证（需要 JDK）：
 
@@ -319,16 +328,17 @@ python certs\verify_jsse.py
 
 | 现象 | 看哪行日志 / 怎么查 | 原因 | 怎么修 |
 |---|---|---|---|
-| 应用商店提示**网络异常**，日志里显示 `[pass] 原样转发 (1739 bytes)` 却收不到内容 | 代理窗口 | 代理只记日志没真发出响应 | 确认跑的是最新代码；`python selftest.py` 的 **[8] 响应完整性** 要 PASS |
+| 应用商店提示**网络异常**，日志里显示 `[pass] 原样转发 (1739 bytes)` 却收不到内容 | 代理窗口 | 代理只记日志没真发出响应 | 确认跑的是最新代码；`python selftest.py` 的 **响应完整性** 要 PASS |
 | 应用商店**一直转圈**，日志有 `[ERROR] 转发失败: The read operation timed out` | 代理窗口 | 上游 keep-alive，代理读到 EOF 一直等 | 确认代码最新并重启代理 |
-| 详情页还是**官方信息**，日志有 `[WARN] 响应不是 JSON` | 看日志里 `body前32字节=` | 上游用 chunked 编码，body 是 `68d\r\n{...}` | 确认代码含 `decode_chunked()`；`selftest.py` 的 **[10] 真实 chunked 响应回归** 要 PASS |
+| 详情页还是**官方信息**，日志有 `[WARN] 响应不是 JSON` | 看日志里 `body前32字节=` | 上游用 chunked 编码，body 是 `68d\r\n{...}` | 确认代码含 `decode_chunked()`；`selftest.py` 的 **真实 chunked 响应回归** 要 PASS |
 | 详情页还是官方信息，但日志**没有** `[WARN]` | — | serve 规则路径没命中 | 看 `[pass] 原样转发` 那行的实际路径，加进 `store_rules.json` 的 `path_prefix` |
 | 详情页改对了但**装上还是官方 app** | 有没有 `[serve] 规则命中` | 下载路径没匹配上 | 同上；车机实际路径是 `/ecology/ecofile-<hash>.apk` |
+| 点安装**直接显示「更新」、无法安装**，车机日志 `SSLPeerUnverifiedException: Hostname ... not verified` | 代理窗口有无该下载域名的握手失败 | 下载域名切到 `prod-dp-public-es33-tos.z-onesoft.com`，旧证书 SAN 未覆盖或 hosts 未劫持 | 确认 `pki\chain.pem` 的 SAN 含 `*.z-onesoft.com`（必要时 `python certs\sign_leaf.py` 重签）；**重跑 `.\setup.ps1 -Hosts`** 让 hosts 含第三个域名；`store_rules.json` 的 `serve` 要有该域名规则 |
 | 有 `[patch] 改写成功` 但页面没变 | — | 车机缓存 | 车机 **设置 → 应用管理 → 应用商店 → 清除数据**，重进详情页 |
 | `[ERROR] TLS 握手失败` | 代理窗口 | 车机不认这张叶子证书 | 跑 `certs\verify_jsse.py` 看哪个根不可用；换另一张中间证书重签（见 10.1） |
 | 车机**连不上热点** | — | 热点没开 / 车机没连 | 重新开热点，让车机连 |
 | 车机连上了但商店打不开 | 第 7.2 步的 DNS 验证 | ICS DNS 没接管查询 | 见 10.2 |
-| `Address already in use` | — | 443 被占 | `netstat -ano | findstr :443` 找占用进程结束掉 |
+| `Address already in use` | — | 443 被占 | `netstat -ano \| findstr :443` 找占用进程结束掉 |
 | 代理报 `转发失败: Connection reset` | — | 上游断开 | 重试；连续失败就重启代理 |
 
 ### 10.1 换一张中间证书
@@ -407,8 +417,8 @@ A：不会。代理出示的证书链能被旧车机的系统信任库接受；
 `certs/verify_jsse.py` 就是用来提前确认这件事的。
 
 **Q：会不会影响车机其他功能（导航、电话）？**
-A：只劫持了两个商店域名（商店详情接口 + 资源下载），
-其余请求一律原样转发。
+A：只劫持了三个商店域名（详情接口 + 两套下载域名），
+其余请求一律原样转发；未命中的域名仍会被代理转发，但证书 SAN 不匹配时握手会失败。
 
 **Q：证书能给别人用吗？**
 A：**不建议也不应该**。这些中间证书已被全球根库移除，
@@ -426,7 +436,7 @@ A：**不建议也不应该**。这些中间证书已被全球根库移除，
 .\setup.ps1 -Restore      # 还原 hosts
 
 python proxy_server.py    # 起代理 (前台, 保持窗口)
-python selftest.py        # 自检 (期望 61/61)
+python selftest.py        # 自检 (期望 53/53)
 python certs\verify_jsse.py   # 证书兼容性 (期望 3/3)
 python certs\sign_leaf.py     # 重新签发叶子证书
 ```
